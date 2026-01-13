@@ -55,13 +55,21 @@ Retry Logic: DB 데드락(DeadlockLoserDataAccessException) 등 일시적 장애
 ```markdown
 ---
 
-## 🚀 트러블슈팅 (Troubleshooting Log)
+🚀 트러블슈팅 (Troubleshooting Log)
+이슈 1: IllegalStateException (엑셀 타입 불일치)
+상황: 엑셀의 날짜/숫자 셀을 getStringCellValue()로 읽을 때 런타임 에러 발생하여 배치 중단.
 
-| 이슈 구분 | 상황 및 원인 | 해결 방안 및 성과 |
-| :--- | :--- | :--- |
-| **타입 불일치** | 엑셀의 날짜/숫자 셀을 `getStringCellValue()`로 읽을 때 `IllegalStateException` 발생 | **DataFormatter 도입**: 모든 셀 타입을 포맷팅된 문자열로 통일하여 추출하도록 리팩토링하여 타입 안정성 확보 |
-| **제약조건 위반** | `Processor` 변환 중 `NOT NULL` 컬럼인 `occurredAt` 데이터가 누락되어 트랜잭션 롤백 발생 | **검증 로직 강화**: Processor 단계에서 필수 필드 검증 후 누락 시 기본값 주입으로 데이터 정합성 확보 |
-| **환경 간 격차** | 로컬(H2) 테스트는 성공하나 운영(PostgreSQL) 환경 배포 시 SQL 문법 차이로 기능 실패 | **Testcontainers 도입**: Docker 기반 PostgreSQL 컨테이너를 활용하여 운영 환경과 동일한 조건에서 통합 테스트 수행 |
+해결: POI의 DataFormatter를 사용하여 모든 셀을 포맷팅된 문자열로 통일하여 추출하도록 리팩토링하여 타입 안정성 확보.
+
+이슈 2: DataIntegrityViolationException (DB 제약조건 위반)
+상황: DataProcessor 변환 과정에서 NOT NULL 컬럼인 occurredAt 데이터가 누락되어 트랜잭션 롤백 발생.
+
+해결: Processor 단계에서 필수 필드 검증 로직을 추가하고, 누락 시 기본값을 주입하여 데이터 정합성 확보.
+
+이슈 3: 환경 간 테스트 격차 (H2 vs PostgreSQL)
+상황: 로컬(H2)에서는 성공하던 테스트가 운영(PostgreSQL) 배포 시 SQL 문법 차이로 실패.
+
+해결: Testcontainers를 도입하여 테스트 실행 시 도커 컨테이너로 PostgreSQL을 동적으로 띄워 운영 환경과 동일한 조건에서 통합 테스트 수행.
 
 ---
 

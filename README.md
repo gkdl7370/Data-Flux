@@ -3,8 +3,16 @@
 ![Java](https://img.shields.io/badge/Java-17-orange) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.1-green) ![Spring Batch](https://img.shields.io/badge/Spring%20Batch-5.1-blue) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue) ![Testcontainers](https://img.shields.io/badge/Testcontainers-1.19.3-red)
 
 ## 📌 프로젝트 개요 (Overview)
-**Data-Flux**는 다양한 포맷(Excel, CSV)의 로우 데이터를 수집하여 정규화된 스키마로 가공 및 적재하는 **고가용성 배치 애플리케이션**입니다.
-기존의 인메모리 리스트 처리 방식에서 발생하는 OOM(Out Of Memory) 위험과 느린 DB 적재 속도를 개선하기 위해, **Spring Batch 5 기반의 Chunk 지향 아키텍처**로 전환하였습니다.
+**Data-Flux**는 다양한 포맷(Excel, CSV)의 로우 데이터를 수집하여  
+규화된 스키마로 가공 및 적재하는 **고가용성 배치 애플리케이션**입니다.  
+기존의 인메모리 리스트 처리 방식에서 발생하는 OOM(Out Of Memory) 위험과 느린 DB 적재 속도를 개선하기 위해  
+**Spring Batch 5 기반의 Chunk 지향 아키텍처**로 전환하였습니다.
+
+---
+
+## ⚠️ Constraints (제약 사항 및 배경)
+이 프로젝트는 단순한 10만 건의 텍스트 처리가 아닌 **Row당 50개 이상의 필드 매핑과 복잡한 유효성 검사**가 수행되는 시나리오를 가정했습니다.  
+이 경우 객체 생성 비용이 높아져 일반적인 List 방식으로는 1GB Heap 메모리에서도 OOM이 발생함을 확인하였으며 이를 해결하기 위해 Chunk 지향 처리를 도입했습니다.
 
 ---
 

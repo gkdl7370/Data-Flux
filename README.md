@@ -36,6 +36,7 @@
 ---
 
 ## 🏗 시스템 아키텍처 & 로직
+
 Spring Batch의 표준인 `Reader-Processor-Writer` 패턴을 준수하여 유지보수성을 높였습니다.
 
 🔹 Robust Reading (ExcelItemReader)
@@ -51,9 +52,6 @@ Retry Logic: DB 데드락(DeadlockLoserDataAccessException) 등 일시적 장애
 ---
 
 ### 3/3: 트러블슈팅 및 실행 방법
-
-```markdown
----
 
 🚀 트러블슈팅 (Troubleshooting Log)
 이슈 1: IllegalStateException (엑셀 타입 불일치)
@@ -71,11 +69,9 @@ Retry Logic: DB 데드락(DeadlockLoserDataAccessException) 등 일시적 장애
 
 해결: Testcontainers를 도입하여 테스트 실행 시 도커 컨테이너로 PostgreSQL을 동적으로 띄워 운영 환경과 동일한 조건에서 통합 테스트 수행.
 
----
 
 ## 🏃‍♂️ How to Run
 
-```bash
 # 1. 저장소 복제 (본인 아이디로 변경)
 git clone [https://github.com/지호님의아이디/Data-Flux.git](https://github.com/지호님의아이디/Data-Flux.git)
 

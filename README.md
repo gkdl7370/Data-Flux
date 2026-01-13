@@ -17,8 +17,9 @@
 
 ---
 
-## 📊 성능 개선 벤치마크 (Performance Benchmark)
-**100,000건(Row)**의 대용량 엑셀 데이터를 처리하는 시나리오에서 기존 레거시 방식(List 적재 후 JPA 단건 저장) 대비 달성한 성능 수치입니다.
+## 📊 성능 개선 벤치마크 (Performance Benchmark)  
+
+100,000건(Row)의 대용량 엑셀 데이터를 처리하는 시나리오에서 기존 레거시 방식(List 적재 후 JPA 단건 저장) 대비 달성한 성능 수치입니다.
 
 | 측정 항목 | Legacy (In-Memory + JPA Save) | **Data-Flux (Stream + Batch Insert)** | **개선율** |
 | :--- | :--- | :--- | :--- |

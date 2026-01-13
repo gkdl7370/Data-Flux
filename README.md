@@ -40,13 +40,14 @@
 ## 🏗 시스템 아키텍처 & 로직
 Spring Batch의 표준인 `Reader-Processor-Writer` 패턴을 준수하여 유지보수성을 높였습니다.
 
-```mermaid
+"mermaid
 graph LR
     Input[Excel File] -->|Stream Reading| Reader(ExcelItemReader)
     Reader -->|DataPacket DTO| Processor(DataDecompositionProcessor)
-    Processor -->|Validation & Transform| Entity(DataPoint Entity)
-    Entity -->|Chunk Write (size:100)| Writer(BulkDataWriter)
+    Processor -->|Validation and Transform| Entity(DataPoint Entity)
+    Entity -->|Chunk Write Size 100| Writer(BulkDataWriter)
     Writer -->|Batch Insert| DB[(PostgreSQL)]
+
 1. Robust Reading (ExcelItemReader)
 Row 단위 스트리밍으로 메모리 사용량 최소화.
 

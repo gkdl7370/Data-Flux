@@ -51,32 +51,39 @@ Retry Logic: DB 데드락(DeadlockLoserDataAccessException) 등 일시적 장애
 
 ---
 
-### 3/3: 트러블슈팅 및 실행 방법
+## 🚀 트러블슈팅 (Troubleshooting Log)
+Data-Flux를 개발하며 직면한 핵심 문제와 해결 과정입니다.
 
-🚀 트러블슈팅 (Troubleshooting Log)
-이슈 1: IllegalStateException (엑셀 타입 불일치)
-상황: 엑셀의 날짜/숫자 셀을 getStringCellValue()로 읽을 때 런타임 에러 발생하여 배치 중단.
+🔍 이슈 1: 엑셀 데이터 타입 불일치로 인한 배치 중단
+   상황: 날짜/숫자 셀을 읽을 때 IllegalStateException 발생
 
-해결: POI의 DataFormatter를 사용하여 모든 셀을 포맷팅된 문자열로 통일하여 추출하도록 리팩토링하여 타입 안정성 확보.
+   원인: 외부 데이터의 서식이 일정하지 않아 발생한 런타임 에러
 
-이슈 2: DataIntegrityViolationException (DB 제약조건 위반)
-상황: DataProcessor 변환 과정에서 NOT NULL 컬럼인 occurredAt 데이터가 누락되어 트랜잭션 롤백 발생.
+   해결: DataFormatter를 적용하여 모든 셀을 포맷팅된 문자열로 통일 추출하도록 리팩토링
 
-해결: Processor 단계에서 필수 필드 검증 로직을 추가하고, 누락 시 기본값을 주입하여 데이터 정합성 확보.
+🔍 이슈 2: DB 제약조건 위반에 따른 트랜잭션 롤백
+   상황: 필수 값(NOT NULL) 누락 데이터 유입 시 전체 배치 롤백
 
-이슈 3: 환경 간 테스트 격차 (H2 vs PostgreSQL)
-상황: 로컬(H2)에서는 성공하던 테스트가 운영(PostgreSQL) 배포 시 SQL 문법 차이로 실패.
+   원인: DataProcessor 단계에서의 검증 부족
 
-해결: Testcontainers를 도입하여 테스트 실행 시 도커 컨테이너로 PostgreSQL을 동적으로 띄워 운영 환경과 동일한 조건에서 통합 테스트 수행.
+   해결: 필수 필드 검증 로직 추가 및 누락 데이터에 대한 기본값 주입(Default Value Strategy) 정책 수립
 
+🔍 이슈 3: 로컬 테스트와 운영 환경의 SQL 호환성 차이
+   상황: H2에서 성공한 테스트가 PostgreSQL 운영 환경에서 문법 오류로 실패
+
+   원인: H2와 PostgreSQL 간의 미묘한 SQL 표준 지원 차이
+
+   해결: Testcontainers를 도입해 Docker 컨테이너 기반의 PostgreSQL 테스트 환경을 구축하여 환경 격리 성공
+
+---
 
 ## 🏃‍♂️ How to Run
 
-# 1. 저장소 복제 (본인 아이디로 변경)
-git clone [https://github.com/지호님의아이디/Data-Flux.git](https://github.com/지호님의아이디/Data-Flux.git)
+1. 저장소 복제
+git clone [https://github.com/gkdl7370/Data-Flux.git](https://github.com/gkdl7370/Data-Flux.git)
 
-# 2. 빌드 및 테스트 (Docker 필요)
+2. 빌드 및 테스트 (Docker 필요)
 ./mvnw clean package
 
-# 3. 애플리케이션 실행
+3. 애플리케이션 실행
 java -jar target/Data-Flux-0.0.1-SNAPSHOT.jar

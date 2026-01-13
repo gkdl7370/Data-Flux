@@ -1,0 +1,20 @@
+spring:
+  # 데이터베이스 연결 설정 (예시 DB 정보를 사용해 보안을 강화합니다)
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/data_flux_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+
+  # Spring Batch 메타데이터 테이블 설정
+  batch:
+    jdbc:
+      initialize-schema: always # 애플리케이션 실행 시 배치 운영을 위한 테이블 자동 생성
+    job:
+      enabled: true # 서버 시작 시 모든 Job이 자동으로 실행되는 것을 방지합니다.
+
+  # JPA 및 Hibernate 설정
+  jpa:
+    hibernate:
+      ddl-auto: validate # 기존 테이블 구조를 보호하기 위해 실제 운영 구조와 일치하는지 검증만 수행합니다.
+    show-sql: true # 실행되는 SQL을 콘솔에 출력합니다.

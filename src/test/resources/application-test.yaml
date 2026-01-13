@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    # 테스트 시에는 메모리 기반의 H2를 사용하여 별도의 DB 설치 없이도 동작하게 합니다.
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  batch:
+    jdbc:
+      initialize-schema: always
+
+  jpa:
+    hibernate:
+      ddl-auto: create # 테스트 시에는 테이블을 자동으로 생성하게 합니다.
+    show-sql: true

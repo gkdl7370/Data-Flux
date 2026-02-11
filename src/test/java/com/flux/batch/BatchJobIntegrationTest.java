@@ -14,6 +14,8 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
@@ -21,7 +23,6 @@ import java.io.File;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBatchTest
-
 @SpringBootTest(classes = {
         DataFluxApplication.class,
         DataIngestJobConfig.class,
@@ -34,6 +35,14 @@ public class BatchJobIntegrationTest {
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
+
+    @Configuration
+    static class TestConfig {
+        @Bean
+        public JobLauncherTestUtils jobLauncherTestUtils() {
+            return new JobLauncherTestUtils();
+        }
+    }
 
     @Autowired
     private ExcelItemReader excelItemReader;
@@ -56,7 +65,7 @@ public class BatchJobIntegrationTest {
         // then
         assertThat(jobExecution.getExitStatus().getExitCode()).isEqualTo("COMPLETED");
 
-        // (선택) DB 저장 확인
+        // DB 저장 확인
         // assertThat(dataPointRepository.count()).isGreaterThan(0);
     }
 }

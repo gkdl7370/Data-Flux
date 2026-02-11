@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DeadlockLoserDataAccessException;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.util.List;
+
 @Configuration
 @RequiredArgsConstructor
 public class DataIngestJobConfig {
@@ -24,7 +26,6 @@ public class DataIngestJobConfig {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
 
-    // 빈(Bean) 주입
     private final ExcelItemReader excellItemReader;
     private final DataDecompositionProcessor dataDecompositionProcessor;
     private final BulkDataWriter bulkDataWriter;
@@ -39,9 +40,9 @@ public class DataIngestJobConfig {
     @Bean
     public Step ingestStep() {
         return new StepBuilder("ingestStep", jobRepository)
-                .<DataPacket, DataPoint>chunk(100, transactionManager) // [중요] Processor의 제네릭과 일치
+                .<DataPacket, List<DataPoint>>chunk(100, transactionManager)
                 .reader(excellItemReader)
-                .processor(dataDecompositionProcessor) // 이제 타입이 일치하여 에러가 사라집니다.
+                .processor(dataDecompositionProcessor)
                 .writer(bulkDataWriter)
                 .faultTolerant()
                 .skip(IllegalArgumentException.class)

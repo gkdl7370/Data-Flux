@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class ExcelItemReader implements ItemReader<DataPacket> {
     private Iterator<Row> rowIterator;
-    // [핵심] 엑셀의 숫자/날짜 포맷을 문자로 안전하게 변환해주는 도구
+    // 엑셀의 숫자/날짜 포맷을 문자로 안전하게 변환해주는 도구
     private final DataFormatter dataFormatter = new DataFormatter();
 
     public ExcelItemReader() {}

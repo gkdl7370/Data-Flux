@@ -25,7 +25,7 @@
 
 ### 2. 예비 인프라의 유지 (Service & Repository)
 * **이유**: 현재는 배치 중심이나 본 시스템은 향후 **실시간 관리 대시보드 및 API 서버**로의 확장을 목표로 하고 있음
-* **가치**: `DataPointService`와 `Repository`를 미리 구축함으로써 신규 API 개발 시 비즈니스 로직의 중복 없이 즉시 기능을 확장할 수 있는 **'전략적 유연성'**을 확보.
+* **가치**: `DataPointService`와 `Repository`는 신규 API 개발 시 비즈니스 로직의 중복 없이 즉시 기능을 확장할 수 있도록 미리 형태만 작성
 
 ### 3. Chunk-oriented 아키텍처
 * **이유**: 수십만 건의 데이터를 List로 한 번에 처리할 경우 발생하는 OOM(Out Of Memory) 리스크를 차단
